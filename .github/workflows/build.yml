@@ -14,6 +14,7 @@ jobs:
         package:
           - ragna
           - ragna-base
+      fail-fast: false
 
     steps:
       - name: Checkout code
