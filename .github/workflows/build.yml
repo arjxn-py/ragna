@@ -37,6 +37,13 @@ jobs:
           python -m build
           echo "Build complete for ragna-base"
 
+      - name: Upload ragna-base artifacts
+        if: matrix.package == 'ragna-base'
+        uses: actions/upload-artifact@v3
+        with:
+          name: ragna-base-dist
+          path: dist/*.whl
+
       - name: Install ragna-base
         if: matrix.package == 'ragna-base'
         run: |
@@ -49,6 +56,13 @@ jobs:
           echo "Building ragna package"
           python -m build --sdist --wheel --outdir ./dist ./meta-package
           echo "Build complete for ragna"
+
+      - name: Upload ragna artifacts
+        if: matrix.package == 'ragna'
+        uses: actions/upload-artifact@v3
+        with:
+          name: ragna-dist
+          path: dist/*.whl
 
       - name: Install ragna
         if: matrix.package == 'ragna'
