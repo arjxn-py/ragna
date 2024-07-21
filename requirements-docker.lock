@@ -52,6 +52,12 @@ click==8.1.7
     #   lancedb
     #   typer
     #   uvicorn
+colorama==0.4.6
+    # via
+    #   build
+    #   click
+    #   tqdm
+    #   uvicorn
 coloredlogs==15.0.1
     # via onnxruntime
 contourpy==1.2.0
@@ -215,7 +221,7 @@ pandas==2.1.4
     #   panel
 panel==1.4.4
     # via Ragna (pyproject.toml)
-param==2.0.1
+param==2.1.1
     # via
     #   panel
     #   pyviz-comms
@@ -273,6 +279,8 @@ pypika==0.48.9
     # via chromadb
 pyproject-hooks==1.0.0
     # via build
+pyreadline3==3.4.1
+    # via humanfriendly
 python-dateutil==2.8.2
     # via
     #   kubernetes
@@ -388,8 +396,6 @@ uvicorn==0.26.0
     # via
     #   Ragna (pyproject.toml)
     #   chromadb
-uvloop==0.19.0
-    # via uvicorn
 watchfiles==0.21.0
     # via uvicorn
 wcwidth==0.2.13
