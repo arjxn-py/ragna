@@ -31,6 +31,12 @@ jobs:
           python-version: "3.11"
           optional-dependencies: "false"
 
+      - name: Verify setup-env step
+        run: |
+          echo "Python version: $(python --version)"
+          echo "Pip version: $(pip --version)"
+          pip list
+
       - name: Update docker requirements
         id: update
         run: |
@@ -42,24 +48,15 @@ jobs:
           NEEDS_UPDATE=$(git diff --quiet && echo 'false' || echo 'true')
           echo "needs-update=${NEEDS_UPDATE}" | tee --append $GITHUB_OUTPUT
 
-      - name: Open a PR to update the requirements
-        # prettier-ignore
-        if:
-          ${{ steps.update.outputs.needs-update && github.event_name == 'workflow_dispatch' }}
-        uses: peter-evans/create-pull-request@v5
-        with:
-          commit-message: update requirements-docker.lock
-          branch: update-docker-requirements
-          branch-suffix: timestamp
-          base: ${{ github.head_ref || github.ref_name }}
-          title: Update requirements-docker.lock
-          # prettier-ignore
-          body:
-            https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          reviewers: ${{ github.actor }}
+      - name: Commit changes if needed
+        if: steps.update.outputs.needs-update == 'true'
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add requirements-docker.lock
+          git commit -m "Update requirements-docker.lock"
+          git push origin ${{ github.head_ref }}
 
       - name: Show diff
-        # prettier-ignore
-        if:
-          ${{ steps.update.outputs.needs-update && github.event_name != 'workflow_dispatch' }}
+        if: steps.update.outputs.needs-update == 'true'
         run: git diff --exit-code
