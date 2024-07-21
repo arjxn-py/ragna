@@ -53,9 +53,10 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout ${{ github.event.pull_request.head.ref }}
           git add requirements-docker.lock
           git commit -m "Update requirements-docker.lock"
-          git push origin ${{ github.head_ref }}
+          git push origin ${{ github.event.pull_request.head.ref }}
 
       - name: Show diff
         if: steps.update.outputs.needs-update == 'true'
